@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppForGit.Models;
 
 namespace WpfAppForGit
 {
@@ -20,9 +21,15 @@ namespace WpfAppForGit
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CurrencyConverter currencyConverter;
         public MainWindow()
         {
+            currencyConverter = new CurrencyConverter();
             InitializeComponent();
+
+
+            Title = currencyConverter.BankHrefApi;
         }
+
     }
 }
