@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -34,13 +35,15 @@ namespace WpfAppForGit.Commons
         public CurrencyConverter()
         { 
             Date = DateTime.Now;
+            Currencies = new ObservableCollection<Currency>();
         }
 
         private void LoadCurrency()
         { 
             WebClient client = new WebClient();
+            client.Encoding = Encoding.UTF8;
             string currenciesJsonPesponse = client.DownloadString(_fullHref);
-
+            Currencies = JsonConvert.DeserializeObject<ObservableCollection<Currency>>(currenciesJsonPesponse);
         }
     }
 }
