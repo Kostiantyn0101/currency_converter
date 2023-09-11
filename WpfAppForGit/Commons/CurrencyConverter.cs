@@ -7,10 +7,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using WpfAppForGit.Tools;
 
 namespace WpfAppForGit.Commons
 {
-    internal class CurrencyConverter
+    internal class CurrencyConverter : NotifyPropertyChangedBase
     {
         private string _href = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=";
         private string _fullHref = String.Empty;
@@ -20,8 +22,8 @@ namespace WpfAppForGit.Commons
             get { return _date; }
             set { 
                 _date = value; 
-                _fullHref = _href + _date.ToString("yyyyMMdd") + "&json";
                 LoadCurrency();
+                OnPropertyChanged(nameof(Date));
             }  
         }
         public string BankHrefApi
@@ -31,19 +33,41 @@ namespace WpfAppForGit.Commons
                 return _fullHref;    
             }
         }
-        public ObservableCollection<Currency> Currencies { get; private set; }
+        private ObservableCollection<Currency> _currencies = new ObservableCollection<Currency>();
+        public ObservableCollection<Currency> Currencies
+        {
+            get
+            {
+                return _currencies;
+            }
+            set
+            { 
+                _currencies = value;
+            }
+        }
         public CurrencyConverter()
         { 
             Date = DateTime.Now;
-            Currencies = new ObservableCollection<Currency>();
         }
 
         private void LoadCurrency()
-        { 
+        {
+            _fullHref = _href + _date.ToString("yyyyMMdd") + "&json";
             WebClient client = new WebClient();
             client.Encoding = Encoding.UTF8;
             string currenciesJsonPesponse = client.DownloadString(_fullHref);
             Currencies = JsonConvert.DeserializeObject<ObservableCollection<Currency>>(currenciesJsonPesponse);
+            OnPropertyChanged(nameof(Currencies));
+        }
+        public event Action SelectedDateChanged;
+
+        private void OnSelectedDateChanged()
+        {
+            SelectedDateChanged?.Invoke();
+        }
+        private void Calendar_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadCurrency();
         }
     }
 }

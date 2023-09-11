@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -21,11 +22,12 @@ namespace WpfAppForGit
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CurrencyConverter _currencyConverter;
         public MainWindow()
         {
-            DataContext = new CurrencyConverter();
             InitializeComponent();
+            _currencyConverter = new CurrencyConverter();
+            DataContext = _currencyConverter;
         }
-
     }
 }

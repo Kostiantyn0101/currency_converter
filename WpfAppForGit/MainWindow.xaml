@@ -22,15 +22,25 @@
             
         </Menu>
         <Grid Grid.Row="1">
-            <DataGrid Margin="5" AutoGenerateColumns="False" IsReadOnly="True" 
-                          ItemsSource="{Binding Path=Currencies}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*"></ColumnDefinition>
+                <ColumnDefinition Width="40*"> </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" Margin="5" AutoGenerateColumns="False" IsReadOnly="True" 
+              ItemsSource="{Binding Path=Currencies}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Code" Binding="{Binding Path=r030}" />
                     <DataGridTextColumn Header="Title" Binding="{Binding Path=txt}" />
                     <DataGridTextColumn Header="Rate" Binding="{Binding Path=rate}" />
-                    <DataGridTextColumn Header="Code" Binding="{Binding Path=cc}" />
+                    <DataGridTextColumn Header="Abbreviation" Binding="{Binding Path=cc}" />
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Grid.Column="1">
+                <Calendar DisplayDate="{Binding Date}" SelectedDate="{Binding Date, Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}"/>
+
+
+            </StackPanel>
         </Grid>
         <StatusBar Grid.Row="2" Grid.Column="0">
             <StatusBarItem>
