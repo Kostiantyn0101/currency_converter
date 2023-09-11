@@ -22,7 +22,15 @@
             
         </Menu>
         <Grid Grid.Row="1">
-            
+            <DataGrid Margin="5" AutoGenerateColumns="False" IsReadOnly="True" 
+                          ItemsSource="{Binding Path=Currencies}" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Code" Binding="{Binding Path=r030}" />
+                    <DataGridTextColumn Header="Title" Binding="{Binding Path=txt}" />
+                    <DataGridTextColumn Header="Rate" Binding="{Binding Path=rate}" />
+                    <DataGridTextColumn Header="Code" Binding="{Binding Path=cc}" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
         <StatusBar Grid.Row="2" Grid.Column="0">
             <StatusBarItem>

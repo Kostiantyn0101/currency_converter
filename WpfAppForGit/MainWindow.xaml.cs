@@ -21,14 +21,10 @@ namespace WpfAppForGit
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CurrencyConverter currencyConverter;
         public MainWindow()
         {
-            currencyConverter = new CurrencyConverter();
+            DataContext = new CurrencyConverter();
             InitializeComponent();
-
-
-            Title = currencyConverter.BankHrefApi;
         }
 
     }
