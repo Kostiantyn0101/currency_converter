@@ -7,7 +7,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WpfAppForGit.Tools;
 
 namespace WpfAppForGit.Commons
@@ -20,36 +22,91 @@ namespace WpfAppForGit.Commons
         public DateTime Date
         {
             get { return _date; }
-            set { 
-                _date = value; 
+            set
+            {
+                _date = value;
                 LoadCurrency();
                 OnPropertyChanged(nameof(Date));
-            }  
+            }
         }
         public string BankHrefApi
         {
-            get 
-            {
-                return _fullHref;    
-            }
-        }
-        private ObservableCollection<Currency> _currencies = new ObservableCollection<Currency>();
-        public ObservableCollection<Currency> Currencies
-        {
             get
             {
-                return _currencies;
+                return _fullHref;
             }
+        }
+        private ObservableCollection<Currency> _currencies;
+        public ObservableCollection<Currency> Currencies
+        {
+            get { return _currencies; }
             set
-            { 
-                _currencies = value;
+            {
+                if (_currencies != null)
+                {
+                    _currencies = value;
+                    OnPropertyChanged(nameof(Currencies));
+                }
+            }
+        }
+        private decimal sumFrom;
+        public decimal SumFrom
+        {
+            get { return sumFrom; }
+            set
+            {
+                if (sumFrom != value)
+                {
+                    sumFrom = value;
+                    OnPropertyChanged(nameof(SumFrom));
+                }
+            }
+        }
+        private decimal sumTo;
+        public decimal SumTo
+        {
+            get { return sumTo; }
+            set
+            {
+                if (sumTo != value)
+                {
+                    sumTo = value;
+                    OnPropertyChanged(nameof(SumTo));
+                }
+            }
+        }
+
+        private Currency selectedCurrencyFrom;
+        public Currency SelectedCurrencyFrom
+        { 
+            get => selectedCurrencyFrom;
+            set 
+            {
+                if (selectedCurrencyFrom != value)
+                { 
+                    selectedCurrencyFrom = value;
+                    OnPropertyChanged(nameof(SelectedCurrencyFrom));
+                }
+            }
+        }
+        private Currency selectedCurrencyTo;
+        public Currency SelectedCurrencyTo
+        {
+            get => selectedCurrencyTo;
+            set
+            {
+                if (selectedCurrencyTo != value)
+                {
+                    selectedCurrencyTo = value;
+                    OnPropertyChanged(nameof(SelectedCurrencyTo));
+                }
             }
         }
         public CurrencyConverter()
-        { 
+        {
+            _currencies = new ObservableCollection<Currency>();
             Date = DateTime.Now;
         }
-
         private void LoadCurrency()
         {
             _fullHref = _href + _date.ToString("yyyyMMdd") + "&json";
@@ -59,12 +116,30 @@ namespace WpfAppForGit.Commons
             Currencies = JsonConvert.DeserializeObject<ObservableCollection<Currency>>(currenciesJsonPesponse);
             OnPropertyChanged(nameof(Currencies));
         }
-        public event Action SelectedDateChanged;
+        public ICommand Convert =>
+            new RelayCommand(x =>
+            {
+                if (selectedCurrencyFrom != null && 
+                selectedCurrencyTo != null && 
+                string.IsNullOrEmpty(SumFrom.ToString())!=true)
+                {
+                    if (decimal.TryParse(SumFrom.ToString(), out decimal sumFrom))
+                    {
+                        decimal _convertedSum = sumFrom * (selectedCurrencyTo.rate / selectedCurrencyFrom.rate);
+                        SumTo = _convertedSum;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select both currencies.");
+                }
+            });
+        //public event Action SelectedDateChanged;
 
-        private void OnSelectedDateChanged()
-        {
-            SelectedDateChanged?.Invoke();
-        }
+        //private void OnSelectedDateChanged()
+        //{
+        //    SelectedDateChanged?.Invoke();
+        //}
         private void Calendar_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadCurrency();

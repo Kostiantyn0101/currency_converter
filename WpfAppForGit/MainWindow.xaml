@@ -19,12 +19,12 @@
             <MenuItem Header="Edit"></MenuItem>
             <MenuItem Header="View"></MenuItem>
             <MenuItem Header="Help"></MenuItem>
-            
+
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60*"></ColumnDefinition>
-                <ColumnDefinition Width="40*"> </ColumnDefinition>
+                <ColumnDefinition Width="40*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <DataGrid Grid.Column="0" Margin="5" AutoGenerateColumns="False" IsReadOnly="True" 
               ItemsSource="{Binding Path=Currencies}" >
@@ -35,11 +35,20 @@
                     <DataGridTextColumn Header="Abbreviation" Binding="{Binding Path=cc}" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                 <Calendar DisplayDate="{Binding Date}" SelectedDate="{Binding Date, Mode=TwoWay, 
                     UpdateSourceTrigger=PropertyChanged}"/>
-
-
+                <StackPanel Width="160" Orientation="Horizontal">
+                    <TextBox Width="100" Text="{Binding SumFrom}" />
+                    <ComboBox Width="60" ItemsSource="{Binding Path=Currencies}" DisplayMemberPath="cc" 
+                              SelectedItem="{Binding SelectedCurrencyFrom}" />
+                </StackPanel>
+                <StackPanel Width="160" Orientation="Horizontal">
+                    <TextBox Width="100" Text="{Binding SumTo}" />
+                    <ComboBox Width="60" ItemsSource="{Binding Path=Currencies}" DisplayMemberPath="cc" 
+                              SelectedItem="{Binding SelectedCurrencyTo}" />
+                </StackPanel>
+                <Button Width="160" Content="Convert" Command="{Binding Convert}" />
             </StackPanel>
         </Grid>
         <StatusBar Grid.Row="2" Grid.Column="0">

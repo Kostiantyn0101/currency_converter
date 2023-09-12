@@ -22,12 +22,10 @@ namespace WpfAppForGit
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CurrencyConverter _currencyConverter;
         public MainWindow()
         {
             InitializeComponent();
-            _currencyConverter = new CurrencyConverter();
-            DataContext = _currencyConverter;
+            DataContext = new CurrencyConverter();
         }
     }
 }
