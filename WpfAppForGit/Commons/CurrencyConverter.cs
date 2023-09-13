@@ -21,7 +21,7 @@ namespace WpfAppForGit.Commons
         private DateTime _date;
         public DateTime Date
         {
-            get { return _date; }
+            get => _date;
             set
             {
                 _date = value;
@@ -31,15 +31,12 @@ namespace WpfAppForGit.Commons
         }
         public string BankHrefApi
         {
-            get
-            {
-                return _fullHref;
-            }
+            get => _fullHref;
         }
         private ObservableCollection<Currency> _currencies;
         public ObservableCollection<Currency> Currencies
         {
-            get { return _currencies; }
+            get => _currencies;
             set
             {
                 if (_currencies != null)
@@ -52,7 +49,7 @@ namespace WpfAppForGit.Commons
         private decimal sumFrom;
         public decimal SumFrom
         {
-            get { return sumFrom; }
+            get => sumFrom;
             set
             {
                 if (sumFrom != value)
@@ -65,7 +62,7 @@ namespace WpfAppForGit.Commons
         private decimal sumTo;
         public decimal SumTo
         {
-            get { return sumTo; }
+            get => sumTo;
             set
             {
                 if (sumTo != value)
@@ -134,12 +131,7 @@ namespace WpfAppForGit.Commons
                     MessageBox.Show("Please select both currencies.");
                 }
             });
-        //public event Action SelectedDateChanged;
 
-        //private void OnSelectedDateChanged()
-        //{
-        //    SelectedDateChanged?.Invoke();
-        //}
         private void Calendar_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadCurrency();
